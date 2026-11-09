@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Analyst Desk · Week 7</title><link rel="preconnect" href="https://fonts.googleapis.com/"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;700&display=swap"><style>
+/* Layout: a statistical-release sheet — slim masthead, tab strip of three desks, one task column (~44rem) of numbered items */
+:root{
+  --paper:#f6f7f4; --sheet:#ffffff; --ink:#1d2421; --muted:#5d6762; --rule:#d9ddd6;
+  --accent:#0f6b5c; --accent-soft:#e1efe9; --mark:#b4561c;
+  --ok:#1f7a3a; --ok-bg:#e5f3e8; --bad:#b3261e; --bad-bg:#fbe9e7;
+  --f-display:"IBM Plex Sans Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --f-data:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#121614; --sheet:#1a1f1c; --ink:#e6ebe7; --muted:#9aa49e; --rule:#2e3531;
+  --accent:#5cc2ab; --accent-soft:#1d2f2a; --mark:#e08a50;
+  --ok:#6fcf8a; --ok-bg:#183222; --bad:#f08a80; --bad-bg:#3a1d1a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#121614; --sheet:#1a1f1c; --ink:#e6ebe7; --muted:#9aa49e; --rule:#2e3531;
+  --accent:#5cc2ab; --accent-soft:#1d2f2a; --mark:#e08a50;
+  --ok:#6fcf8a; --ok-bg:#183222; --bad:#f08a80; --bad-bg:#3a1d1a; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 var(--f-body);padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:46rem;margin:0 auto}
+header.mast{padding-block:20px 12px;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;justify-content:space-between;border-bottom:2px solid var(--ink)}
+.mast h1{font:700 1.9rem/1.05 var(--f-display);margin:0;letter-spacing:.01em;text-wrap:balance}
+.mast .kicker{font:600 .72rem/1 var(--f-data);text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:6px}
+.variant{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font:.8rem var(--f-data);color:var(--muted)}
+.variant b{color:var(--ink);font-size:.95rem}
+.variant input{width:5.5em;font:inherit;padding:4px 6px;border:1px solid var(--rule);background:var(--sheet);color:var(--ink);border-radius:4px}
+button{font:600 .85rem var(--f-body);cursor:pointer;border-radius:5px;border:1px solid var(--accent);background:var(--accent);color:var(--sheet);padding:7px 14px}
+button.ghost{background:transparent;color:var(--accent)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--mark);outline-offset:2px}
+button:disabled{opacity:.45;cursor:default}
+nav.tabs{display:flex;gap:4px;margin-top:14px;overflow-x:auto;border-bottom:1px solid var(--rule)}
+nav.tabs a{flex:0 0 auto;text-decoration:none;color:var(--muted);font:600 .9rem var(--f-display);padding:8px 12px;border-bottom:3px solid transparent;letter-spacing:.02em}
+nav.tabs a[aria-current="true"]{color:var(--ink);border-color:var(--accent)}
+nav.tabs .sc{font:.75rem var(--f-data);color:var(--accent);margin-left:6px}
+.intro{color:var(--muted);font-size:.9rem;margin:14px 0 4px;max-width:65ch}
+section.desk h2{font:700 1.35rem/1.2 var(--f-display);margin:22px 0 4px}
+section.desk h3{font:600 .78rem/1 var(--f-data);text-transform:uppercase;letter-spacing:.1em;color:var(--mark);margin:28px 0 10px}
+.lede{max-width:65ch;margin:0 0 10px}
+.tablebox{overflow-x:auto;background:var(--sheet);border:1px solid var(--rule);border-radius:6px;margin:10px 0 6px}
+table{border-collapse:collapse;width:100%;font:.88rem var(--f-data);font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;text-align:right;border-bottom:1px solid var(--rule);white-space:nowrap}
+th{font:600 .75rem var(--f-body);color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+th:first-child,td:first-child{text-align:left}
+tr:last-child td{border-bottom:0}
+.task{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:12px 14px;margin:10px 0;display:grid;gap:8px}
+.task .q{display:flex;gap:10px}
+.task .n{font:600 .8rem var(--f-data);color:var(--accent);min-width:2.2em;padding-top:2px}
+.task .qt{min-width:0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-left:calc(2.2em + 10px)}
+.row input[type=text]{width:9.5em;font:1rem var(--f-data);padding:6px 8px;border:1px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--ink)}
+.unit{font:.85rem var(--f-data);color:var(--muted)}
+.fb{padding-left:calc(2.2em + 10px);font-size:.88rem}
+.fb .ok{color:var(--ok);font-weight:600}
+.fb .bad{color:var(--bad);font-weight:600}
+.sol{background:var(--accent-soft);border-radius:4px;padding:8px 10px;margin-top:6px;font-size:.88rem}
+.sol code,.mono{font-family:var(--f-data);font-size:.85rem}
+.task.done-ok{border-color:var(--ok)}
+.task.done-bad{border-color:var(--bad)}
+.opts{display:grid;gap:6px;padding-left:calc(2.2em + 10px)}
+.opts label{display:flex;gap:8px;align-items:flex-start;padding:6px 8px;border:1px solid var(--rule);border-radius:4px;cursor:pointer;background:var(--paper)}
+.opts input{margin-top:4px}
+.cards{display:grid;gap:8px}
+.card{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:10px 12px;display:grid;gap:8px}
+.card p{margin:0}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--paper);color:var(--ink);border-color:var(--rule);font-weight:500;padding:6px 10px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--sheet);border-color:var(--ink)}
+.card.ok{border-color:var(--ok);background:var(--ok-bg)}
+.card.bad{border-color:var(--bad);background:var(--bad-bg)}
+.card .why{font-size:.85rem;color:var(--ink)}
+.headline{font:600 1.02rem/1.35 var(--f-display);letter-spacing:.01em}
+.headline::before{content:"DATA · ";font:600 .7rem var(--f-data);color:var(--mark);letter-spacing:.1em}
+.selrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:8px}
+.selrow label{display:grid;gap:3px;font-size:.78rem;color:var(--muted)}
+select{font:.92rem var(--f-body);padding:6px;border:1px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--ink);width:100%}
+.diagram{max-width:320px}
+.diagram svg{width:100%;height:auto;display:block}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.summary{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:16px;display:grid;gap:10px}
+.sumrow{display:flex;justify-content:space-between;gap:12px;font:1rem var(--f-data);border-bottom:1px dashed var(--rule);padding-bottom:6px}
+.code{font:600 1.4rem var(--f-data);letter-spacing:.06em;color:var(--accent)}
+.small{font-size:.82rem;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.task,.card{transition:border-color .2s,background-color .2s}}
+</style></head>
+<body><div class="wrap">
+<header class="mast">
+  <div>
+    <div class="kicker">Economics for Investors · Week 7</div>
+    <h1>Analyst Desk</h1>
+  </div>
+  <div class="variant">
+    <span>Variant <b id="seedShow">7523</b></span>
+    <label for="seedIn" class="small">Open variant</label>
+    <input id="seedIn" type="text" inputmode="numeric" maxlength="4" aria-label="Variant number">
+    <button class="ghost" id="seedGo" type="button">Open</button>
+    <button class="ghost" id="seedNew" type="button">New variant</button>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Desks">
+  <a href="#desk1" data-tab="desk1" aria-current="true">1 · Money and inflation<span class="sc" id="tab1"></span></a>
+  <a href="#desk2" data-tab="desk2" aria-current="false">2 · Policy stance<span class="sc" id="tab2"></span></a>
+  <a href="#desk3" data-tab="desk3" aria-current="false">3 · Policy mix and markets<span class="sc" id="tab3"></span></a>
+  <a href="#summary" data-tab="summary" aria-current="false">Summary</a>
+</nav>
+<p class="intro">Your numbers are generated for your variant, so your neighbour's answers will differ — compare reasoning, not results. Each question allows two attempts; after that, or when you ask for it, the solution opens. Enter decimals with a point or a comma. Round answers to two decimal places; enter percentages as 5.26, not 0.0526.</p>
+
+<section class="desk" id="desk1"><h2>Desk 1 · Money and inflation</h2><h3>How banks create money</h3><p class="lede">The required reserve ratio is <b class="mono">8.0%</b>. A customer deposits <b class="mono">850 mn</b> in cash at Bank 1. Assume banks lend out everything above required reserves and all loans come back to the banking system as new deposits.</p><div class="task"><div class="q"><span class="n">1.1</span><div class="qt">Money multiplier.</div></div><div class="row"><input type="text" inputmode="decimal" id="desk1-mult" aria-label="Answer 1.1" autocomplete="off"><button type="button">Check</button><button type="button" class="ghost">Show solution</button></div><div class="fb" aria-live="polite"></div></div><div class="task"><div class="q"><span class="n">1.2</span><div class="qt">How much can Bank 1 lend out of the new deposit?</div></div><div class="row"><input type="text" inputmode="decimal" id="desk1-loan" aria-label="Answer 1.2" autocomplete="off"><span class="unit">mn</span><button type="button">Check</button><button type="button" class="ghost">Show solution</button></div><div class="fb" aria-live="polite"></div></div><div class="task"><div class="q"><span class="n">1.3</span><div class="qt">Maximum total increase in deposits in the banking system (the initial deposit included).</div></div><div class="row"><input type="text" inputmode="decimal" id="desk1-maxm" aria-label="Answer 1.3" autocomplete="off"><span class="unit">mn</span><button type="button">Check</button><button type="button" class="ghost">Show solution</button></div><div class="fb" aria-live="polite"></div></div><div class="task"><div class="q"><span class="n">1.4</span><div class="qt">In practice, the increase in money is usually smaller than your answer to 1.3. Why?</div></div><div class="opts" role="radiogroup"><label for="desk1-leak-0"><input type="radio" name="desk1-leak" id="desk1-leak-0" value="0"><span><b>A.</b> People keep part of their money as cash, and banks may hold extra reserves or find too few creditworthy borrowers.</span></label><label for="desk1-leak-1"><input type="radio" name="desk1-leak" id="desk1-leak-1" value="1"><span><b>B.</b> The central bank pays interest on all deposits.</span></label><label for="desk1-leak-2"><input type="radio" name="desk1-leak" id="desk1-leak-2" value="2"><span><b>C.</b> Banks must keep 100% reserves against loans.</span></label></div><div class="row"><button type="button">Check</button></div><div class="fb" aria-live="polite"></div></div><h3>Quantity theory of money</h3><p class="lede">Over a year, the money supply grows by <b class="mono">11.4%</b>, real GDP by <b class="mono">2.4%</b>, and the velocity of money changes by <b class="mono">0.5%</b>. Use MV = PY in its exact form: price level growth = (1 + money growth) × (1 + velocity growth) / (1 + real GDP growth) − 1, with rates as decimals.</p><div class="task"><div class="q"><span class="n">1.5</span><div class="qt">Inflation implied by the quantity theory.</div></div><div class="row"><input type="text" inputmode="decimal" id="desk1-qtm" aria-label="Answer 1.5" autocomplete="off"><span class="unit">%</span><button type="button">Check</button><button type="button" class="ghost">Show solution</button></div><div class="fb" aria-live="polite"></div></div><h3>Fisher effect and surprise inflation</h3><p class="lede">A one-year deposit pays a fixed <b class="mono">12.9%</b>. When the deposit is opened, inflation over the year is expected to be <b class="mono">3.9%</b>. Use the exact Fisher relation: real rate = (1 + nominal rate) / (1 + inflation) − 1.</p><div class="task"><div class="q"><span class="n">1.6</span><div class="qt">Expected real return on the deposit.</div></div><div class="row"><input type="text" inputmode="decimal" id="desk1-re" aria-label="Answer 1.6" autocomplete="off"><span class="unit">%</span><button type="button">Check</button><button type="button" class="ghost">Show solution</button></div><div class="fb" aria-live="polite"></div></div><div class="task"><div class="q"><span class="n">1.7</span><div class="qt">Inflation actually turns out to be 8.4%. Realised real return on the deposit.</div></div><div class="row"><input type="text" inputmode="decimal" id="desk1-ra" aria-label="Answer 1.7" autocomplete="off"><span class="unit">%</span><button type="button">Check</button><button type="button" class="ghost">Show solution</button></div><div class="fb" aria-live="polite"></div></div><div class="task"><div class="q"><span class="n">1.8</span><div class="qt">Who gained from the unexpected inflation on this fixed-rate deposit?</div></div><div class="opts" role="radiogroup"><label for="desk1-who-0"><input type="radio" name="desk1-who" id="desk1-who-0" value="2"><span><b>A.</b> Nobody: inflation affects both sides equally.</span></label><label for="desk1-who-1"><input type="radio" name="desk1-who" id="desk1-who-1" value="1"><span><b>B.</b> The depositor, because the nominal interest is paid in full.</span></label><label for="desk1-who-2"><input type="radio" name="desk1-who" id="desk1-who-2" value="0"><span><b>C.</b> The bank, which borrowed the money and repays it in money worth less than expected.</span></label></div><div class="row"><button type="button">Check</button></div><div class="fb" aria-live="polite"></div></div></section>
+<section class="desk" id="desk2" hidden=""><h2>Desk 2 · Policy stance</h2><p class="lede">An economy's trend real GDP growth is <b class="mono">2.7%</b>, and the central bank's inflation target is <b class="mono">2%</b>. The policy rate is <b class="mono">2.75%</b>; inflation over the past year was <b class="mono">6.1%</b>.</p><div class="task"><div class="q"><span class="n">2.1</span><div class="qt">Neutral policy rate (CFA definition).</div></div><div class="row"><input type="text" inputmode="decimal" id="desk2-neu" aria-label="Answer 2.1" autocomplete="off"><span class="unit">%</span><button type="button">Check</button><button type="button" class="ghost">Show solution</button></div><div class="fb" aria-live="polite"></div></div><div class="task"><div class="q"><span class="n">2.2</span><div class="qt">Policy rate minus the neutral rate.</div></div><div class="row"><input type="text" inputmode="decimal" id="desk2-diff" aria-label="Answer 2.2" autocomplete="off"><span class="unit">pp</span><button type="button">Check</button><button type="button" class="ghost">Show solution</button></div><div class="fb" aria-live="polite"></div></div><div class="task"><div class="q"><span class="n">2.3</span><div class="qt">The monetary policy stance is:</div></div><div class="opts" role="radiogroup"><label for="desk2-stance-0"><input type="radio" name="desk2-stance" id="desk2-stance-0" value="2"><span><b>A.</b> neutral</span></label><label for="desk2-stance-1"><input type="radio" name="desk2-stance" id="desk2-stance-1" value="0"><span><b>B.</b> contractionary</span></label><label for="desk2-stance-2"><input type="radio" name="desk2-stance" id="desk2-stance-2" value="1"><span><b>C.</b> expansionary</span></label></div><div class="row"><button type="button">Check</button></div><div class="fb" aria-live="polite"></div></div><div class="task"><div class="q"><span class="n">2.4</span><div class="qt">Real policy rate, measured with last year's inflation (policy rate minus inflation).</div></div><div class="row"><input type="text" inputmode="decimal" id="desk2-real" aria-label="Answer 2.4" autocomplete="off"><span class="unit">pp</span><button type="button">Check</button><button type="button" class="ghost">Show solution</button></div><div class="fb" aria-live="polite"></div></div><div class="task"><div class="q"><span class="n">2.5</span><div class="qt">Inflation is above the target, and the central bank expects it to stay there. Exchange rates are quoted in units of foreign currency per unit of domestic currency. What is the central bank's most likely move and its effect on the exchange rate quote?</div></div><div class="opts" role="radiogroup"><label for="desk2-move-0"><input type="radio" name="desk2-move" id="desk2-move-0" value="1"><span><b>A.</b> It cuts the policy rate; the quote falls (the domestic currency depreciates).</span></label><label for="desk2-move-1"><input type="radio" name="desk2-move" id="desk2-move-1" value="2"><span><b>B.</b> It raises the policy rate; the quote falls (the domestic currency depreciates).</span></label><label for="desk2-move-2"><input type="radio" name="desk2-move" id="desk2-move-2" value="0"><span><b>C.</b> It raises the policy rate; the quote rises (the domestic currency appreciates).</span></label></div><div class="row"><button type="button">Check</button></div><div class="fb" aria-live="polite"></div></div><h3>Classify the actions</h3><p class="lede">Is each action expansionary or contractionary?</p><div class="cards"><div class="card"><p>The central bank promises to keep rates low until unemployment falls below a set level.</p><div class="seg" role="group" aria-label="Classification"><button type="button" aria-pressed="false" id="desk2-a-0-0">Expansionary</button><button type="button" aria-pressed="false" id="desk2-a-0-1">Contractionary</button></div><p class="why" hidden=""></p></div><div class="card"><p>The central bank raises the reserve requirement.</p><div class="seg" role="group" aria-label="Classification"><button type="button" aria-pressed="false" id="desk2-a-1-0">Expansionary</button><button type="button" aria-pressed="false" id="desk2-a-1-1">Contractionary</button></div><p class="why" hidden=""></p></div><div class="card"><p>The central bank stops reinvesting the bonds that mature on its balance sheet (quantitative tightening).</p><div class="seg" role="group" aria-label="Classification"><button type="button" aria-pressed="false" id="desk2-a-2-0">Expansionary</button><button type="button" aria-pressed="false" id="desk2-a-2-1">Contractionary</button></div><p class="why" hidden=""></p></div><div class="card"><p>The central bank lowers the reserve requirement.</p><div class="seg" role="group" aria-label="Classification"><button type="button" aria-pressed="false" id="desk2-a-3-0">Expansionary</button><button type="button" aria-pressed="false" id="desk2-a-3-1">Contractionary</button></div><p class="why" hidden=""></p></div><div class="card"><p>The central bank cuts its policy rate.</p><div class="seg" role="group" aria-label="Classification"><button type="button" aria-pressed="false" id="desk2-a-4-0">Expansionary</button><button type="button" aria-pressed="false" id="desk2-a-4-1">Contractionary</button></div><p class="why" hidden=""></p></div><div class="card"><p>The central bank raises its policy rate.</p><div class="seg" role="group" aria-label="Classification"><button type="button" aria-pressed="false" id="desk2-a-5-0">Expansionary</button><button type="button" aria-pressed="false" id="desk2-a-5-1">Contractionary</button></div><p class="why" hidden=""></p></div></div><div class="actions"><button type="button">Check all</button><span class="small" aria-live="polite"></span></div></section>
+<section class="desk" id="desk3" hidden=""><h2>Desk 3 · Policy mix and markets</h2><h3>Name the policy mix</h3><p class="lede">Which combination of fiscal and monetary policy does each scenario describe?</p><div class="cards"><div class="card"><p>VAT is raised to cut the deficit, and the central bank lowers its rate as inflation falls.</p><div class="seg" role="group" aria-label="Classification"><button type="button" aria-pressed="false" id="desk3-mix-0-0">Easy fiscal, easy monetary</button><button type="button" aria-pressed="false" id="desk3-mix-0-1">Easy fiscal, tight monetary</button><button type="button" aria-pressed="false" id="desk3-mix-0-2">Tight fiscal, easy monetary</button><button type="button" aria-pressed="false" id="desk3-mix-0-3">Tight fiscal, tight monetary</button></div><p class="why" hidden=""></p></div><div class="card"><p>The government expands social transfers, while the central bank raises its rate to fight inflation.</p><div class="seg" role="group" aria-label="Classification"><button type="button" aria-pressed="false" id="desk3-mix-1-0">Easy fiscal, easy monetary</button><button type="button" aria-pressed="false" id="desk3-mix-1-1">Easy fiscal, tight monetary</button><button type="button" aria-pressed="false" id="desk3-mix-1-2">Tight fiscal, easy monetary</button><button type="button" aria-pressed="false" id="desk3-mix-1-3">Tight fiscal, tight monetary</button></div><p class="why" hidden=""></p></div><div class="card"><p>The government cuts spending to reduce debt, and the central bank raises its rate.</p><div class="seg" role="group" aria-label="Classification"><button type="button" aria-pressed="false" id="desk3-mix-2-0">Easy fiscal, easy monetary</button><button type="button" aria-pressed="false" id="desk3-mix-2-1">Easy fiscal, tight monetary</button><button type="button" aria-pressed="false" id="desk3-mix-2-2">Tight fiscal, easy monetary</button><button type="button" aria-pressed="false" id="desk3-mix-2-3">Tight fiscal, tight monetary</button></div><p class="why" hidden=""></p></div><div class="card"><p>The budget raises spending on infrastructure, and the central bank cuts its policy rate.</p><div class="seg" role="group" aria-label="Classification"><button type="button" aria-pressed="false" id="desk3-mix-3-0">Easy fiscal, easy monetary</button><button type="button" aria-pressed="false" id="desk3-mix-3-1">Easy fiscal, tight monetary</button><button type="button" aria-pressed="false" id="desk3-mix-3-2">Tight fiscal, easy monetary</button><button type="button" aria-pressed="false" id="desk3-mix-3-3">Tight fiscal, tight monetary</button></div><p class="why" hidden=""></p></div></div><div class="actions"><button type="button">Check all</button><span class="small" aria-live="polite"></span></div><h3>Higher rates and the budget</h3><p class="lede">Government debt is <b class="mono">90%</b> of GDP. Within a year, <b class="mono">45%</b> of the debt has to be refinanced or carries a floating rate. The central bank's tightening raises the rate on this part of the debt by <b class="mono">1.00 pp</b>.</p><div class="task"><div class="q"><span class="n">3.1</span><div class="qt">Increase in annual interest payments, in % of GDP.</div></div><div class="row"><input type="text" inputmode="decimal" id="desk3-bill" aria-label="Answer 3.1" autocomplete="off"><span class="unit">% of GDP</span><button type="button">Check</button><button type="button" class="ghost">Show solution</button></div><div class="fb" aria-live="polite"></div></div><h3>Stimulus and the central bank's response</h3><p class="lede">Households spend <b class="mono">83%</b> of extra disposable income; the tax rate is <b class="mono">21%</b>. The economy is close to full capacity. The government raises spending by <b class="mono">100 bn</b>. The inflation-targeting central bank responds by raising its rate, and private investment falls by <b class="mono">57 bn</b>.</p><div class="task"><div class="q"><span class="n">3.2</span><div class="qt">Net change in aggregate demand, after the multiplier works on both changes.</div></div><div class="row"><input type="text" inputmode="decimal" id="desk3-net" aria-label="Answer 3.2" autocomplete="off"><span class="unit">bn</span><button type="button">Check</button><button type="button" class="ghost">Show solution</button></div><div class="fb" aria-live="polite"></div></div><div class="task"><div class="q"><span class="n">3.3</span><div class="qt">Under which condition would the same spending increase raise demand the most?</div></div><div class="opts" role="radiogroup"><label for="desk3-acc-0"><input type="radio" name="desk3-acc" id="desk3-acc-0" value="1"><span><b>A.</b> The economy is at full capacity and the central bank raises its rate.</span></label><label for="desk3-acc-1"><input type="radio" name="desk3-acc" id="desk3-acc-1" value="0"><span><b>B.</b> The economy has spare capacity and the central bank keeps its rate unchanged.</span></label><label for="desk3-acc-2"><input type="radio" name="desk3-acc" id="desk3-acc-2" value="2"><span><b>C.</b> Households expect higher taxes later and save more today.</span></label></div><div class="row"><button type="button">Check</button></div><div class="fb" aria-live="polite"></div></div><div class="task"><div class="q"><span class="n">3.4</span><div class="qt">A government announces deep spending cuts, and the central bank signals a series of rate cuts. For an investor, which outcome is most likely?</div></div><div class="opts" role="radiogroup"><label for="desk3-inv-0"><input type="radio" name="desk3-inv" id="desk3-inv-0" value="2"><span><b>A.</b> The domestic currency appreciates strongly because interest rates rise.</span></label><label for="desk3-inv-1"><input type="radio" name="desk3-inv" id="desk3-inv-1" value="0"><span><b>B.</b> Government bond yields fall, and rate-sensitive private sectors such as housing and consumer credit benefit.</span></label><label for="desk3-inv-2"><input type="radio" name="desk3-inv" id="desk3-inv-2" value="1"><span><b>C.</b> Bond yields rise because the government borrows more.</span></label></div><div class="row"><button type="button">Check</button></div><div class="fb" aria-live="polite"></div></div><div class="task"><div class="q"><span class="n">3.5</span><div class="qt">Public debt is 120% of GDP and mostly short-term. Inflation is above target, but the central bank hesitates to raise its rate because the government's interest bill would jump. This situation is called:</div></div><div class="opts" role="radiogroup"><label for="desk3-dom-0"><input type="radio" name="desk3-dom" id="desk3-dom-0" value="0"><span><b>A.</b> fiscal dominance</span></label><label for="desk3-dom-1"><input type="radio" name="desk3-dom" id="desk3-dom-1" value="2"><span><b>B.</b> a liquidity trap</span></label><label for="desk3-dom-2"><input type="radio" name="desk3-dom" id="desk3-dom-2" value="1"><span><b>C.</b> Ricardian equivalence</span></label></div><div class="row"><button type="button">Check</button></div><div class="fb" aria-live="polite"></div></div></section>
+<section class="desk" id="summary" hidden=""></section>
+</div>
+
+<script>
+(function(){
+"use strict";
+/* ---------- utilities ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+var R; function rnd(){return R();} function ri(a,b){return a+Math.floor(rnd()*(b-a+1));}
+function pick(arr){return arr[Math.floor(rnd()*arr.length)];}
+function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(rnd()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function fmt(x,d){d=d||0;var s=Number(x).toFixed(d);var p=s.split(".");p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g," ");return p.join(".");}
+function parseNum(s){if(s==null)return NaN;s=String(s).trim().replace(/\s| /g,"").replace(",",".").replace("%","");if(s==="")return NaN;return Number(s);}
+function el(tag,attrs,html){var e=document.createElement(tag);if(attrs)for(var k in attrs){if(k==="class")e.className=attrs[k];else e.setAttribute(k,attrs[k]);}if(html!=null)e.innerHTML=html;return e;}
+function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){return null;}}
+
+/* scoring: score[desk] = {id: 0|1} */
+var score={desk1:{},desk2:{},desk3:{}};
+var maxPts={desk1:0,desk2:0,desk3:0};
+function setScore(desk,id,v){score[desk][id]=v;updateTabs();}
+function deskPts(d){var s=0;for(var k in score[d])s+=score[d][k];return s;}
+function updateTabs(){["desk1","desk2","desk3"].forEach(function(d,i){var n=Object.keys(score[d]).length;document.getElementById("tab"+(i+1)).textContent=n?deskPts(d)+"/"+maxPts[d]:"";});if(!document.getElementById("summary").hidden)renderSummary();}
+
+/* numeric task: opts {desk,id,n,q,unit,answer,tol(abs),rtol(rel),solution} */
+function numTask(parent,o){
+  maxPts[o.desk]++;
+  var box=el("div",{class:"task"});
+  box.innerHTML='<div class="q"><span class="n">'+o.n+'</span><div class="qt">'+o.q+'</div></div>';
+  var row=el("div",{class:"row"});
+  var inp=el("input",{type:"text",inputmode:"decimal",id:o.desk+"-"+o.id,"aria-label":"Answer "+o.n,autocomplete:"off"});
+  var bt=el("button",{type:"button"},"Check"); var sb=el("button",{type:"button",class:"ghost"},"Show solution");
+  row.appendChild(inp); if(o.unit)row.appendChild(el("span",{class:"unit"},o.unit)); row.appendChild(bt); row.appendChild(sb);
+  var fb=el("div",{class:"fb","aria-live":"polite"});
+  box.appendChild(row); box.appendChild(fb); parent.appendChild(box);
+  var tries=0, closed=false;
+  function reveal(ok){closed=true;bt.disabled=true;sb.disabled=true;inp.readOnly=true;box.classList.add(ok?"done-ok":"done-bad");
+    fb.innerHTML=(ok?'<span class="ok">Correct.</span>':'<span class="bad">'+(tries>=2?"Two attempts used.":"Solution opened.")+'</span>')+'<div class="sol">'+o.solution+'</div>';
+    setScore(o.desk,o.id,ok?1:0);}
+  function check(){if(closed)return;var v=parseNum(inp.value);if(isNaN(v)){fb.innerHTML='<span class="bad">Enter a number.</span>';return;}
+    var tol=Math.max(o.tol||0,Math.abs(o.answer)*(o.rtol||0));tries++;
+    if(Math.abs(v-o.answer)<=tol+1e-9){reveal(true);}else if(tries>=2){reveal(false);}else{fb.innerHTML='<span class="bad">Not quite.</span> One more attempt. '+(o.hint||"");}}
+  bt.addEventListener("click",check); inp.addEventListener("keydown",function(e){if(e.key==="Enter")check();});
+  sb.addEventListener("click",function(){if(!closed)reveal(false);});
+}
+/* multiple choice task: opts {desk,id,n,q,options:[..],correct:index,solution} options shuffled */
+function mcTask(parent,o){
+  maxPts[o.desk]++;
+  var box=el("div",{class:"task"});
+  box.innerHTML='<div class="q"><span class="n">'+o.n+'</span><div class="qt">'+o.q+'</div></div>';
+  var opts=el("div",{class:"opts",role:"radiogroup"});
+  var order=shuffle(o.options.map(function(_,i){return i;}));
+  var letters="ABCD";
+  order.forEach(function(oi,k){var id=o.desk+"-"+o.id+"-"+k;var lab=el("label",{for:id});lab.innerHTML='<input type="radio" name="'+o.desk+"-"+o.id+'" id="'+id+'" value="'+oi+'"><span><b>'+letters[k]+'.</b> '+o.options[oi]+'</span>';opts.appendChild(lab);});
+  var row=el("div",{class:"row"}); var bt=el("button",{type:"button"},"Check"); row.appendChild(bt);
+  var fb=el("div",{class:"fb","aria-live":"polite"});
+  box.appendChild(opts); box.appendChild(row); box.appendChild(fb); parent.appendChild(box);
+  var tries=0,closed=false;
+  bt.addEventListener("click",function(){if(closed)return;var sel=opts.querySelector("input:checked");if(!sel){fb.innerHTML='<span class="bad">Choose an option.</span>';return;}
+    tries++;var ok=Number(sel.value)===o.correct;
+    if(ok||tries>=2){closed=true;bt.disabled=true;opts.querySelectorAll("input").forEach(function(i){i.disabled=true;});box.classList.add(ok?"done-ok":"done-bad");
+      fb.innerHTML=(ok?'<span class="ok">Correct.</span>':'<span class="bad">Two attempts used.</span>')+'<div class="sol">'+o.solution+'</div>';setScore(o.desk,o.id,ok?1:0);}
+    else fb.innerHTML='<span class="bad">Not quite.</span> One more attempt.';});
+}
+
+function classify(parent,desk,id,items,labels,explain){
+  var wrap=el("div",{class:"cards"}); var picks={};
+  items.forEach(function(it,k){var c=el("div",{class:"card"});c.appendChild(el("p",null,it.t));var seg=el("div",{class:"seg",role:"group","aria-label":"Classification"});
+    labels.forEach(function(lb,j){var b=el("button",{type:"button","aria-pressed":"false",id:desk+"-"+id+"-"+k+"-"+j},lb);b.addEventListener("click",function(){if(c.dataset.locked)return;picks[k]=j;seg.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed","false");});b.setAttribute("aria-pressed","true");});seg.appendChild(b);});
+    c.appendChild(seg);var why=el("p",{class:"why"});why.hidden=true;c.appendChild(why);wrap.appendChild(c);it._c=c;it._w=why;});
+  parent.appendChild(wrap);
+  maxPts[desk]+=items.length;
+  var row=el("div",{class:"actions"});var bt=el("button",{type:"button"},"Check all");var fb=el("span",{class:"small","aria-live":"polite"});row.appendChild(bt);row.appendChild(fb);parent.appendChild(row);
+  bt.addEventListener("click",function(){
+    if(Object.keys(picks).length<items.length){fb.textContent="Classify every item first ("+Object.keys(picks).length+" of "+items.length+" done).";return;}
+    var ok=0;items.forEach(function(it,k){var good=picks[k]===it.a;if(good)ok++;it._c.classList.add(good?"ok":"bad");it._c.dataset.locked="1";it._w.hidden=false;
+      it._w.innerHTML=(good?"<b>Correct.</b> ":"<b>Answer: "+labels[it.a]+".</b> ")+(it.w||explain(it));setScore(desk,id+"-"+k,good?1:0);});
+    bt.disabled=true;fb.textContent=ok+" of "+items.length+" correct.";});
+}
+/* ---------- DESK 1: money and inflation ---------- */
+function buildDesk1(){
+  var s=document.getElementById("desk1"); s.innerHTML="";
+  var rr=pick([5,8,10,12.5,20,25]), R=rr/100, D=ri(4,20)*50;
+  var mult=1/R, loan=D*(1-R), maxM=D/R;
+  s.appendChild(el("h2",null,"Desk 1 · Money and inflation"));
+  s.appendChild(el("h3",null,"How banks create money"));
+  s.appendChild(el("p",{class:"lede"},"The required reserve ratio is <b class=mono>"+fmt(rr,1)+"%</b>. A customer deposits <b class=mono>"+D+" mn</b> in cash at Bank 1. Assume banks lend out everything above required reserves and all loans come back to the banking system as new deposits."));
+  numTask(s,{desk:"desk1",id:"mult",n:"1.1",q:"Money multiplier.",answer:mult,tol:0.011,
+    solution:"Money multiplier = 1 / required reserve ratio = <span class=mono>1 / "+fmt(R,3)+" = "+fmt(mult,2)+"</span>."});
+  numTask(s,{desk:"desk1",id:"loan",n:"1.2",q:"How much can Bank 1 lend out of the new deposit?",unit:"mn",answer:loan,tol:0.011,
+    solution:"Bank 1 keeps "+fmt(rr,1)+"% as required reserves and lends the rest: <span class=mono>"+D+" × (1 − "+fmt(R,3)+") = "+fmt(loan,2)+" mn</span>."});
+  numTask(s,{desk:"desk1",id:"maxm",n:"1.3",q:"Maximum total increase in deposits in the banking system (the initial deposit included).",unit:"mn",answer:maxM,rtol:0.0005,
+    solution:"<span class=mono>"+D+" × (1 + "+fmt(1-R,3)+" + "+fmt(1-R,3)+"² + …) = "+D+" / "+fmt(R,3)+" = "+fmt(maxM,2)+" mn</span>. Each bank lends part of what it receives; the sum of all rounds is the deposit times the money multiplier."});
+  mcTask(s,{desk:"desk1",id:"leak",n:"1.4",q:"In practice, the increase in money is usually smaller than your answer to 1.3. Why?",
+    options:["People keep part of their money as cash, and banks may hold extra reserves or find too few creditworthy borrowers.","The central bank pays interest on all deposits.","Banks must keep 100% reserves against loans."],correct:0,
+    solution:"The multiplier is an upper limit. Cash that stays outside banks, excess reserves and weak demand for loans all cut the rounds short. This is why the central bank cannot fully control broad money — one of the limits of monetary policy."});
+  /* quantity theory */
+  var m=ri(40,180)/10, y=ri(0,40)/10, v=pick([0,0,-1,-0.5,0.5]);
+  var inf=((1+m/100)*(1+v/100)/(1+y/100)-1)*100;
+  s.appendChild(el("h3",null,"Quantity theory of money"));
+  s.appendChild(el("p",{class:"lede"},"Over a year, the money supply grows by <b class=mono>"+fmt(m,1)+"%</b>, real GDP by <b class=mono>"+fmt(y,1)+"%</b>, and the velocity of money "+(v===0?"does not change":"changes by <b class=mono>"+fmt(v,1)+"%</b>")+". Use MV = PY in its exact form: price level growth = (1 + money growth) × (1 + velocity growth) / (1 + real GDP growth) − 1, with rates as decimals."));
+  numTask(s,{desk:"desk1",id:"qtm",n:"1.5",q:"Inflation implied by the quantity theory.",unit:"%",answer:inf,tol:0.011,
+    solution:"<span class=mono>(1 + "+fmt(m/100,3)+") × (1 + "+fmt(v/100,3)+") / (1 + "+fmt(y/100,3)+") − 1 = "+fmt(inf,2)+"%</span>. The approximation money growth + velocity growth − real growth gives "+fmt(m+v-y,1)+"%."});
+  /* Fisher */
+  var i=ri(60,200)/10, pe=ri(30,100)/10, pa=Math.round((pe+ri(20,60)/10)*10)/10;
+  var re=((1+i/100)/(1+pe/100)-1)*100, ra=((1+i/100)/(1+pa/100)-1)*100;
+  s.appendChild(el("h3",null,"Fisher effect and surprise inflation"));
+  s.appendChild(el("p",{class:"lede"},"A one-year deposit pays a fixed <b class=mono>"+fmt(i,1)+"%</b>. When the deposit is opened, inflation over the year is expected to be <b class=mono>"+fmt(pe,1)+"%</b>. Use the exact Fisher relation: real rate = (1 + nominal rate) / (1 + inflation) − 1."));
+  numTask(s,{desk:"desk1",id:"re",n:"1.6",q:"Expected real return on the deposit.",unit:"%",answer:re,tol:0.011,
+    solution:"<span class=mono>(1 + "+fmt(i/100,3)+") / (1 + "+fmt(pe/100,3)+") − 1 = "+fmt(re,2)+"%</span>."});
+  numTask(s,{desk:"desk1",id:"ra",n:"1.7",q:"Inflation actually turns out to be "+fmt(pa,1)+"%. Realised real return on the deposit.",unit:"%",answer:ra,tol:0.011,
+    solution:"<span class=mono>(1 + "+fmt(i/100,3)+") / (1 + "+fmt(pa/100,3)+") − 1 = "+fmt(ra,2)+"%</span>, "+fmt(re-ra,2)+" pp less than expected."});
+  mcTask(s,{desk:"desk1",id:"who",n:"1.8",q:"Who gained from the unexpected inflation on this fixed-rate deposit?",
+    options:["The bank, which borrowed the money and repays it in money worth less than expected.","The depositor, because the nominal interest is paid in full.","Nobody: inflation affects both sides equally."],correct:0,
+    solution:"Unexpected inflation redistributes from lenders (here, the depositor) to borrowers (the bank) on fixed nominal contracts. Expected inflation is already built into the nominal rate (Fisher effect), so it does not redistribute; this is why central banks worry most about inflation that is not anticipated."});
+}
+
+/* ---------- DESK 2: policy stance ---------- */
+var ACTS=[
+ {t:"The central bank buys government bonds in the open market.",a:0,w:"Expansionary: purchases add reserves to banks, the interbank rate falls, and the money supply can grow."},
+ {t:"The central bank lowers the reserve requirement.",a:0,w:"Expansionary: banks can lend a larger share of their deposits."},
+ {t:"The central bank cuts its policy rate.",a:0,w:"Expansionary: borrowing becomes cheaper across the economy."},
+ {t:"The central bank promises to keep rates low until unemployment falls below a set level.",a:0,w:"Expansionary: forward guidance lowers expected future short rates and therefore long-term rates today."},
+ {t:"The central bank starts buying long-term bonds in large amounts (quantitative easing).",a:0,w:"Expansionary: it lowers long-term yields and adds reserves to the banking system."},
+ {t:"The central bank sells government bonds in the open market.",a:1,w:"Contractionary: sales drain reserves from banks, and rates rise."},
+ {t:"The central bank raises the reserve requirement.",a:1,w:"Contractionary: banks must hold more reserves and can lend less."},
+ {t:"The central bank raises its policy rate.",a:1,w:"Contractionary: borrowing becomes more expensive."},
+ {t:"To defend a fixed exchange rate, the central bank sells foreign-currency reserves and buys its own currency.",a:1,w:"Contractionary: buying its own currency takes domestic money out of circulation, and domestic rates rise."},
+ {t:"The central bank stops reinvesting the bonds that mature on its balance sheet (quantitative tightening).",a:1,w:"Contractionary: its bond holdings and bank reserves shrink, and long-term yields tend to rise."}
+];
+function buildDesk2(){
+  var s=document.getElementById("desk2"); s.innerHTML="";
+  var g=ri(10,35)/10, tgt=pick([2,3,4]), neu=g+tgt;
+  var gap; do{gap=ri(-12,16)*0.25;}while(Math.abs(gap)<0.5);
+  var p=Math.round((neu+gap)*4)/4, diff=p-neu;
+  var infl; do{infl=Math.round((tgt+ri(-15,50)/10)*10)/10;}while(Math.abs(infl-tgt)<0.25); var real=p-infl;
+  s.appendChild(el("h2",null,"Desk 2 · Policy stance"));
+  s.appendChild(el("p",{class:"lede"},"An economy's trend real GDP growth is <b class=mono>"+fmt(g,1)+"%</b>, and the central bank's inflation target is <b class=mono>"+tgt+"%</b>. The policy rate is <b class=mono>"+fmt(p,2)+"%</b>; inflation over the past year was <b class=mono>"+fmt(infl,1)+"%</b>."));
+  numTask(s,{desk:"desk2",id:"neu",n:"2.1",q:"Neutral policy rate (CFA definition).",unit:"%",answer:neu,tol:0.011,
+    solution:"Neutral rate = trend real growth + inflation target = <span class=mono>"+fmt(g,1)+" + "+tgt+" = "+fmt(neu,2)+"%</span>."});
+  numTask(s,{desk:"desk2",id:"diff",n:"2.2",q:"Policy rate minus the neutral rate.",unit:"pp",answer:diff,tol:0.011,
+    solution:"<span class=mono>"+fmt(p,2)+" − "+fmt(neu,2)+" = "+fmt(diff,2)+" pp</span>."});
+  mcTask(s,{desk:"desk2",id:"stance",n:"2.3",q:"The monetary policy stance is:",
+    options:["contractionary","expansionary","neutral"],correct:diff>0?0:1,
+    solution:"The policy rate is "+(diff>0?"above":"below")+" the neutral rate, so policy is "+(diff>0?"contractionary: it slows demand and inflation.":"expansionary: it supports demand and pushes inflation up.")+" Note that a rate cut that leaves the rate above neutral is still contractionary — only less so."});
+  numTask(s,{desk:"desk2",id:"real",n:"2.4",q:"Real policy rate, measured with last year's inflation (policy rate minus inflation).",unit:"pp",answer:real,tol:0.011,
+    solution:"<span class=mono>"+fmt(p,2)+" − "+fmt(infl,1)+" = "+fmt(real,2)+" pp</span>. This is an ex post measure; central banks look at the real rate based on expected inflation, which can differ."});
+  var hot=infl>tgt;
+  mcTask(s,{desk:"desk2",id:"move",n:"2.5",q:"Inflation is "+(hot?"above":"below")+" the target, and the central bank expects it to stay there. Exchange rates are quoted in units of foreign currency per unit of domestic currency. What is the central bank's most likely move and its effect on the exchange rate quote?",
+    options:["It raises the policy rate; the quote rises (the domestic currency appreciates).","It cuts the policy rate; the quote falls (the domestic currency depreciates).","It raises the policy rate; the quote falls (the domestic currency depreciates)."],correct:hot?0:1,
+    solution:hot?"Inflation above target calls for tighter policy. Higher rates attract foreign capital, so each unit of domestic currency buys more foreign currency: the quote rises.":"Inflation below target calls for easier policy. Lower rates make domestic assets less attractive, so each unit of domestic currency buys less foreign currency: the quote falls."});
+  s.appendChild(el("h3",null,"Classify the actions"));
+  s.appendChild(el("p",{class:"lede"},"Is each action expansionary or contractionary?"));
+  var items=[];[0,1].forEach(function(k){items=items.concat(shuffle(ACTS.filter(function(x){return x.a===k;})).slice(0,3));});
+  classify(s,"desk2","a",shuffle(items),["Expansionary","Contractionary"]);
+}
+
+/* ---------- DESK 3: policy mix and markets ---------- */
+var MIX=[
+ {t:"The budget raises spending on infrastructure, and the central bank cuts its policy rate.",a:0},
+ {t:"Taxes are cut to support households, and the central bank starts buying government bonds.",a:0},
+ {t:"The government expands social transfers, while the central bank raises its rate to fight inflation.",a:1},
+ {t:"Defence spending rises sharply, financed by borrowing, and the central bank keeps its rate well above neutral.",a:1},
+ {t:"VAT is raised to cut the deficit, and the central bank lowers its rate as inflation falls.",a:2},
+ {t:"Public sector wages are frozen, and the central bank promises to keep rates low for longer.",a:2},
+ {t:"The government cuts spending to reduce debt, and the central bank raises its rate.",a:3},
+ {t:"Income taxes are raised, and the central bank sells government bonds from its portfolio.",a:3}
+];
+var MIXL=["Easy fiscal, easy monetary","Easy fiscal, tight monetary","Tight fiscal, easy monetary","Tight fiscal, tight monetary"];
+var MIXW=["Both policies add to demand: output and inflation rise; interest rates are kept low.","Fiscal policy adds to demand while monetary policy restrains it: interest rates are high, and the public sector's share of GDP grows.","Interest rates fall; the private sector grows while the public sector's share of GDP shrinks.","Both policies restrain demand: output falls, interest rates are high."];
+function buildDesk3(){
+  var s=document.getElementById("desk3"); s.innerHTML="";
+  s.appendChild(el("h2",null,"Desk 3 · Policy mix and markets"));
+  s.appendChild(el("h3",null,"Name the policy mix"));
+  s.appendChild(el("p",{class:"lede"},"Which combination of fiscal and monetary policy does each scenario describe?"));
+  var items=[];[0,1,2,3].forEach(function(k){items.push(pick(MIX.filter(function(x){return x.a===k;})));});
+  classify(s,"desk3","mix",shuffle(items),MIXL,function(it){return MIXW[it.a];});
+  /* interest bill */
+  var d=ri(8,20)*5, sh=ri(4,12)*5, dr=ri(4,16)*0.25, bill=d*sh/100*dr/100;
+  s.appendChild(el("h3",null,"Higher rates and the budget"));
+  s.appendChild(el("p",{class:"lede"},"Government debt is <b class=mono>"+d+"%</b> of GDP. Within a year, <b class=mono>"+sh+"%</b> of the debt has to be refinanced or carries a floating rate. The central bank's tightening raises the rate on this part of the debt by <b class=mono>"+fmt(dr,2)+" pp</b>."));
+  numTask(s,{desk:"desk3",id:"bill",n:"3.1",q:"Increase in annual interest payments, in % of GDP.",unit:"% of GDP",answer:bill,tol:0.011,
+    solution:"<span class=mono>"+d+" × "+fmt(sh/100,2)+" × "+fmt(dr/100,4)+" = "+fmt(bill,2)+"%</span> of GDP. With high and short-term debt, monetary tightening quickly worsens the budget — a channel through which fiscal policy can put pressure on the central bank (fiscal dominance)."});
+  /* stimulus with offset */
+  var c=ri(60,85)/100, t=ri(15,30)/100, k=1/(1-c*(1-t)), G=ri(4,16)*10, I=Math.round(G*ri(25,60)/100);
+  var net=(G-I)*k;
+  s.appendChild(el("h3",null,"Stimulus and the central bank's response"));
+  s.appendChild(el("p",{class:"lede"},"Households spend <b class=mono>"+fmt(c*100,0)+"%</b> of extra disposable income; the tax rate is <b class=mono>"+fmt(t*100,0)+"%</b>. The economy is close to full capacity. The government raises spending by <b class=mono>"+G+" bn</b>. The inflation-targeting central bank responds by raising its rate, and private investment falls by <b class=mono>"+I+" bn</b>."));
+  numTask(s,{desk:"desk3",id:"net",n:"3.2",q:"Net change in aggregate demand, after the multiplier works on both changes.",unit:"bn",answer:net,rtol:0.003,
+    solution:"Multiplier = <span class=mono>1 / (1 − "+fmt(c,2)+" × "+fmt(1-t,2)+") = "+fmt(k,4)+"</span>. Net change = <span class=mono>("+G+" − "+I+") × "+fmt(k,4)+" = "+fmt(net,2)+" bn</span>, instead of "+fmt(G*k,2)+" bn without the central bank's response. Crowding out through higher rates shrinks the fiscal multiplier."});
+  mcTask(s,{desk:"desk3",id:"acc",n:"3.3",q:"Under which condition would the same spending increase raise demand the most?",
+    options:["The economy has spare capacity and the central bank keeps its rate unchanged.","The economy is at full capacity and the central bank raises its rate.","Households expect higher taxes later and save more today."],correct:0,
+    solution:"Fiscal multipliers are larger when monetary policy accommodates the stimulus and there is spare capacity. A central bank that offsets the stimulus, or Ricardian households, make the effect smaller."});
+  mcTask(s,{desk:"desk3",id:"inv",n:"3.4",q:"A government announces deep spending cuts, and the central bank signals a series of rate cuts. For an investor, which outcome is most likely?",
+    options:["Government bond yields fall, and rate-sensitive private sectors such as housing and consumer credit benefit.","Bond yields rise because the government borrows more.","The domestic currency appreciates strongly because interest rates rise."],correct:0,
+    solution:"Tight fiscal and easy monetary policy: less government borrowing and lower policy rates push yields down; cheaper credit supports the private sector. Lower rates tend to weaken, not strengthen, the currency."});
+  mcTask(s,{desk:"desk3",id:"dom",n:"3.5",q:"Public debt is 120% of GDP and mostly short-term. Inflation is above target, but the central bank hesitates to raise its rate because the government's interest bill would jump. This situation is called:",
+    options:["fiscal dominance","Ricardian equivalence","a liquidity trap"],correct:0,
+    solution:"Under fiscal dominance, the needs of public finances limit monetary policy. Investors then demand a higher inflation risk premium on long-term bonds. Ricardian equivalence concerns households' response to deficits; a liquidity trap is when rates near zero no longer stimulate the economy."});
+}
+
+/* ---------- summary ---------- */
+function renderSummary(){
+  var s=document.getElementById("summary"); var a=deskPts("desk1"),b=deskPts("desk2"),c=deskPts("desk3");
+  var seed=window.__seed; var chk=(seed*31+a*7+b*13+c*17)%97;
+  var code="W7-"+seed+"-"+a+"."+b+"."+c+"-"+String(chk).padStart(2,"0");
+  s.innerHTML='<h2>Summary</h2><div class="summary">'+
+   '<div class="sumrow"><span>Desk 1 · Money and inflation</span><span>'+a+' / '+maxPts.desk1+'</span></div>'+
+   '<div class="sumrow"><span>Desk 2 · Policy stance</span><span>'+b+' / '+maxPts.desk2+'</span></div>'+
+   '<div class="sumrow"><span>Desk 3 · Policy mix and markets</span><span>'+c+' / '+maxPts.desk3+'</span></div>'+
+   '<div><div class="small">Completion code — enter it only if your instructor asks for it</div><div class="code">'+code+'</div></div>'+
+   '<p class="small">Points count answers found within two attempts without opening the solution. For revision, open a new variant: the same tasks with new numbers.</p></div>';
+}
+
+/* ---------- boot ---------- */
+function start(seed){
+  window.__seed=seed; R=mulberry32(seed*2654435761%4294967296);
+  score={desk1:{},desk2:{},desk3:{}}; maxPts={desk1:0,desk2:0,desk3:0};
+  document.getElementById("seedShow").textContent=seed; store("w7seed",String(seed));
+  buildDesk1(); buildDesk2(); buildDesk3(); updateTabs();
+}
+function showTab(id){["desk1","desk2","desk3","summary"].forEach(function(t){document.getElementById(t).hidden=(t!==id);});
+  document.querySelectorAll("nav.tabs a").forEach(function(a){a.setAttribute("aria-current",a.dataset.tab===id?"true":"false");});
+  if(id==="summary")renderSummary();}
+document.querySelectorAll("nav.tabs a").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();showTab(a.dataset.tab);try{history.replaceState(null,"","#"+a.dataset.tab);}catch(_){}});});
+document.getElementById("seedNew").addEventListener("click",function(){start(1000+Math.floor(Math.random()*9000));});
+document.getElementById("seedGo").addEventListener("click",function(){var v=parseInt(document.getElementById("seedIn").value,10);if(v>=1000&&v<=9999)start(v);});
+var saved=parseInt(store("w7seed"),10);
+start(saved>=1000&&saved<=9999?saved:1000+Math.floor(Math.random()*9000));
+var h=(location.hash||"").replace("#","");showTab(["desk1","desk2","desk3","summary"].indexOf(h)>=0?h:"desk1");
+})();
+</script>
+</body></html>
